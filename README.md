@@ -93,7 +93,7 @@ It should be noted that, due to rigorous encoding standards of XML, extensive va
 
 # Active Scripts
 
-In this section, a comprehensive account will be given of the scripts that are actively deployed on the server.  This includes references to peripheral content as well as the order in which scripts were deployed.  Public-facing pages are implemented as custom Wordpress [template](https://developer.wordpress.org/themes/template-files-section/page-template-files/#creating-custom-page-templates-for-global-use), comprising CSS, HTML, PHP, and Javascript within a single document.  Alternately, there is a single local script used for populating the archive database from scratch, [db_pusher.php](#db_pusherphp); due to the extensive execution time (~10 minutes) of this script it must be run from the host's control panel using `cron`.
+In this section, a comprehensive account will be given of the scripts that are actively deployed on the server.  This includes references to peripheral content as well as the order in which scripts were deployed.  Publicly-accessible pages are implemented as custom Wordpress [templates](https://developer.wordpress.org/themes/template-files-section/page-template-files/#creating-custom-page-templates-for-global-use), comprising individual files made up of CSS, HTML, PHP, and Javascript within a single document.  Alternately, there is one "local" script used for populating the archive database from scratch, [db_pusher.php](#db_pusherphp); due to the extensive execution time (~10 minutes) of this script, in excess of the security-limitations of a web-server, its execution must be scheduled from the host's control panel using `cron`.
 
 ### upload_download.php
 
@@ -110,22 +110,6 @@ and update each row
 
 ### bcl_viewer.php
 
-Actively-deployed scripts may be found in the **live** directory of this repository.  It's contents may be divided into two distinct categories: **Wordpress Template Files** and **Server-Side Scripts**.  This distinction is made on the basis of how a script is executed, ie. via a web-server or a local user, by the reaon
-
-### Wordpress Template Files
-
-The first type of script are Wordpress template files, which contain the PHP, HTML, CSS, and Javascript that make up the public-facing website.  These 'template files' are essentially no different than any other PHP webpage, that is, they are accessed by URL and executed by a webserver before being served to the browser.
-
-
-
-### Server-Side Scripts
-
-Server-side Scripts, contrasted with Wordpress Templates, are not publicly-accessible, as they require an execution timeframe greater than is allowed by public-oriented security restrictions.  Instead, they must be run locally from the server; this may be done by scheduling a cron job in the host control panel. 
-
-#### db_pusher.php
-
-## proc
-In the **proc** directory, we find helper scripts and procedural artifacts left over from the duration of the archiving process (see **timeline** for details) which have been retained for educational and reproducibility purposes.
 
 <!-- 
 ### Collation and OCR - Yelena w Sofia, Sara
