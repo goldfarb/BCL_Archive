@@ -9,6 +9,8 @@ Home to the back-end of bclarchive.net, presently browsable at http://bclarchive
 * [Hosted Content](#hosted-content)
 * [Active Scripts](#active-scripts)
 
+### Repository Map
+
 # Introduction
 The BCL Archive comprises a wealth of academic research published by the Biological Computation Lab at Univ. of Illinois, Urbana-Champagne, since its inception in 1958 through nearly two-decades up to 1976. Encompassing a unique cross-section of subject matter spanning computer science, biology and philosophy, the archive provides a sensational glimpse into the breathtaking atmosphere of the BCL at the dawn of the information age.
 
@@ -91,11 +93,9 @@ It should be noted that, due to rigorous encoding standards of XML, extensive va
 
 # Active Scripts
 
-In this section, a comprehensive account will be given of the scripts that are actively deployed on the server.  This includes references to peripheral content as well as the order in which scripts were deployed.
+In this section, a comprehensive account will be given of the scripts that are actively deployed on the server.  This includes references to peripheral content as well as the order in which scripts were deployed.  Public-facing pages are implemented as custom Wordpress [template](https://developer.wordpress.org/themes/template-files-section/page-template-files/#creating-custom-page-templates-for-global-use), comprising CSS, HTML, PHP, and Javascript within a single document.  Alternately, there is a single local script used for populating the archive database from scratch, [db_pusher.php](#db_pusherphp); due to the extensive execution time (~10 minutes) of this script it must be run from the host's control panel using `cron`.
 
-[finish commenting db pusher]
-
-####upload_download.php
+### upload_download.php
 
 The purpose of upload_download.php is to have a page where the control spreadsheet may be downloaded, modified, and then re-uploaded.
 
@@ -105,8 +105,10 @@ on reupload, contrast each row with existing,
 if changed, borrow parser functions from db_pusher
 and update each row
 
+### db_pusher.php
+[finish commenting db pusher]
 
-
+### bcl_viewer.php
 
 Actively-deployed scripts may be found in the **live** directory of this repository.  It's contents may be divided into two distinct categories: **Wordpress Template Files** and **Server-Side Scripts**.  This distinction is made on the basis of how a script is executed, ie. via a web-server or a local user, by the reaon
 
@@ -114,11 +116,7 @@ Actively-deployed scripts may be found in the **live** directory of this reposit
 
 The first type of script are Wordpress template files, which contain the PHP, HTML, CSS, and Javascript that make up the public-facing website.  These 'template files' are essentially no different than any other PHP webpage, that is, they are accessed by URL and executed by a webserver before being served to the browser.
 
-#### upload_download.php
 
-  
-
-#### bcl_viewer.php
 
 ### Server-Side Scripts
 
