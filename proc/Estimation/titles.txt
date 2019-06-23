@@ -1,0 +1,319 @@
+The Biological Computer Laboratory Index
+The Collected Works of the Biological Computer Laboratory
+BCL Publications
+An Electrophysiological Investigation of Learning in the Earthworm
+Electrolytic Growth of Silver Dendrites
+Table of the Stirling Numbers of the Second Kind S (N, K) for N, K Up To 100 and For Values of S(N,K) Equal Or Smaller Than 10109-1
+Self-improvement using a Disturbed Measure of Goal-Achievement
+A Beam-Blanking Circuit
+Counting to 1,099,508,482,050 Without Carries
+Significance Feedback in Neural Nets
+Automatic Adjustment in a Continuous Environment
+To Model or Not To Model
+Requisite Variety and Its Implications for the Control of Complex Systems
+The Mechanism of Habituation
+The Brain as Regulator
+Computers and Decision Making
+The Relativity of Meaning
+The Avoidance of Overwriting in Self-Organizing Systems
+The FIER Distinguished Lecture 1961 Cybernetics Today and its Future Contribution to the Engineering Sciences
+Cybernetics - Recent Progress in Psychiatry III
+Homeostasis
+What is an Intelligent Machine
+Instability of Pulse Activity in a Net with Threshold
+The Self-Reproducing System
+The Set Theory of Mechanism and Homeostasis
+Threshold and Stability in Large Networks
+Principles of the Self-Organizing System
+Simulation of a Brain
+The Essential Insabiity Of Systems with Threshold and Some Possible Applications to Psychiatry
+Induction, Prediction and Decision-Making in Cybernetic Systems
+Manually Operated Robot or Network - A General-Purpose Analog Machine for Teaching and Research
+Systems and Information
+Biological Computers
+Introdutory Remarks at a Panel Discussion.
+Measuring the Internal Information Exchange in a System
+Many-Dimensional Relations
+Constraint Analysis of Many-Dimensional Relations
+Brain and Computer
+Genius
+Mathematical Models and Computer Analysis of the Function of the Central Nervous System
+Modeling the Brain
+The Place of the Brain in the Natural World
+The Brain of Yesterday and Today
+Homeostasis
+Information Processing in Everyday Human Activity
+The Contribution of Information Theory to Pathological Mechanisms in Psychiatry
+Some Consequences of Bremermann's Limit for Information-Processing Systems
+Two Tables of Identities Governing Information Flows Within Large Systems
+Energy and Signal
+Information Flows Within Co-ordinated Systems
+Systems and Their Informational Measures
+Editorial
+Setting Goals in Cybernetic Systems
+Analysis of the System to be Modeled
+Pulse Interval Representations of Speech Events
+Reorganization by Adaptive Automation
+Some Physiology of Automata
+A Dynamic Signal Analyser
+Some Uses and Misuses of Bio-Computer Philosophy
+Search and Evaluation of Sigificant Event Sequences in Automated Speech Analysis
+Syntactic Analysis for the R2 System
+Computer Systems Scheduling
+Cronkite Produktion Ausreifund und Lebensdauer der Leukozyten
+Production Differentiation and Lifespan of Leukocytes
+Flicker-Fusion
+The Analysis and Systhesis of a Learning Teaching System
+Computation of Invariants in Continuos and Discrete Manifolds
+Life Span and Self-Repair in Complex Systems
+ISL - A New Programming Language for Information Retrieval
+Optimization in a Stable World
+Optimizing Reproduction in a Risky Environment
+Optimizing Reproduction in a Risky Environment with Communication
+ISL - A New Programming Language for Information Retrieval
+Channel Capacity of Moore Automata
+Optimization in a Stable Word
+Tactile-kinesthetic Methods for Measuring Lengh Used by Congennitally Blind Children Perceptual and Motor Skills
+Imagery and Blindness a Personal Report
+The information Transfer Required in Regulatory Processes
+Notation of Movement
+Information Transfer in Complex Systems with Applications to Regulation
+A Digital Computer for the Electronic Music Studio
+A Technique for the Analysis of Musical Instrument Tones
+Analysis of Musical Instrument Tones
+A Method for Analysing Musical Instrument Tones
+A Search Routine in a Relational Data Base
+Connectance of Large Dynamic (Cybernetic) Systems Critical Values for Stability
+A Method of Decoding Speech
+Critical Degenerateness in Linear Systems
+Computer Simulation in Small Groups
+La Paloma: A Self-Organizing System
+Functional Organization of the Tectum of the Tiger Salamander (Ambystoma Tigrinum)
+Diegebrochene Rationalitat
+Die Aristotelische Logik des Seins und Die Nicht-Aristotelische Logik der Reflexion
+Cognition and Volition a Contribution to Theory of Subjectivity
+Cybernetic Ontology and Transjunctional Operations
+Logische Voraussetzungen und Philosophische Sprache in den Sozialwissenschaften
+Das Problemeiner Trans-klassischen Logik
+Hegel Dialectic Theory and Symbolic logic
+Schopfung, Reflexion und Geschichte
+The tradition of Logic and the Concept of a Trans-Classical Rationality
+Das Problemeiner Formalisierung der Tranzendental-dialektischen Logic
+Information, Communication, Many-valued Logic
+Zweiwertigkeit Logische Paradoxieund Selbst-referierende Reflexion
+Cybernetics and Transclassical Logic
+Das Ratsei des Seins
+Super Additivity
+The Logical Structure of Evolution and Emanation 
+Time, Timeless Logic and Self-referential Systems
+Kritische Bemerkungen zur Gegenwartigen Wissenschaftstheorie 
+Bewusstsein als Informationsraffer 
+Many-valued Designations and a Hierarchy of First Order Ontologies
+Philosophische Perspektiven Jahrbuch Ein
+Strukturelle Minimalbedingungen Einer Theorie des Objektiven Geistes Als Einheit Der Geschichte
+Die Histoische Kategorie des Neuen
+Natural Numbers in Transclassic Systems
+Complex Waveform Phonetic Speech Synthesis 
+A Study of the Free Respose Distortion in Speech Processing
+Cybernetic at Illinois
+Dialogue, Dialogic, Dialectic Asketch of Jurgen Habermas' Theory of Communicative Competence
+Introductory Comments to Francisco Varela's Calculus for Self-reference
+Linear Property Filters
+Microwave Modulation of Light Using the Kerr Effect
+Label Incorporation and Label Appearance in White Blood Cells
+Linear Solvability and the Riccati Operator
+Applications of Superpositions for Non-linear Operators
+Noncommutative Superpositions for Non-linear operators
+On Classification and Superposition Principles for Non-linear Operators
+Phase-Plane Solutions of Langmuir's Equation
+A Mathematical Model of the Basiliar Membrane
+Auditory Information
+Superpositions for Nonlinear Operators. I. Strong Superpositions and Linearizability
+Superpositions for Nonlinear Operators. II. Generalized Affine Operators
+Phrase Dictionary Construction Methods for the R2 Information Retrieval System
+ISL-A String Manipulation Language
+An Association Processor for Information Retrieval
+Cutaneous Channel Capacity
+Real-time Display Techniques for the Neurophysiological Laboratory
+Xlog²X For Integers < x < 1009
+Qualitative Limits for Automatic Error Correction Self-repair
+Self-repair as a Computability Concept in the Theory of Automata
+Self-repair as the Limit for Automatic Error Correction
+Structure of Switching Nets
+A Theory of Uniform Switching Nets
+Kinematic and Tessellation Models of Self-repair;
+Recognition of Order and Evolutionary Systems
+A Measure of Dimensional Complexity for Multidimensional Systems
+An Axiomatic Explanation of Complete Self-reproduction
+The Identification of Many-dimensional Relations
+To Approach Music
+Neurophysiology of Cognition
+Biology of Cognition
+An Axiomatic Explanation of Complete Self-reproduction
+Autopoietic Systems
+Representation and Communication Functions
+The Organization of the Living - A Theory of the Living Organization
+A Concept Concerning a Set with a Binary Composition Law
+A Double Generalization of the Concept of a Mutant
+A Residue Test for Boolean Functions
+An Abstract Formulation of a Problem Related to Goldbachs Conjecture
+Combinational Relay Switching Fields
+Does Non-linear Mean Linear
+More on Stochastic Models
+Poincare, Metric Reliability and Switching Components
+Self-dual Symmetric Switching Functions With a Certain A-number Constraint
+Stochastic Combinational Relay Switching Circuits and Reliability
+Two applications of Elementary Number theory
+Concerning Some Inequalities
+The Present Theory of Switching and Some of its Future Trends
+Two Simple-Minded Unsolvable Algebraic Problems
+Where is Fancy Bred?
+Some Remarks on a Relative Anti-Closure Property
+An Abstraction of a Combinatorial Concept
+Remarks on Berkners Can the Social Sciences be Made Exact
+On the Mutant Co-sets of Any Group
+Correlative Remarks Concerning Elementary Number Theory, Groups and Mutant Sets
+The Representation of All Natural Numbers as the Union of Disjoint Maximal Mutants
+Philosophical Comments on the Philosophies of Charles Sanders Pierce and Ludwig Wittgenstein
+Investigations of Relationology
+Some Logico Philosophical Comments on Self Organizing Systems
+Properties of Mutants
+Some Remarks on a Relative Anti-Closure Property
+On Multiply Mutant Sets
+Group Theory and its Application Problems
+A Note on Weakened Goldbach-like Conjecture
+On Mutant Sets
+On Mutant Subsets of Recursively Enumerable Systems
+On the Nature of Realibility of Automata
+Some Theories on the Structure of Mutant Sets and Their Application to Group and Ring Theories
+Models of the Fundamental Theorem of Arithmetic
+A Necessary Condition for the Validity of Goldbach
+On a Theorem Equivalent to Post's Fundamental Theorem of Recursive Function Theory
+Science for the Humanist
+On Differences of Some Structured Sets
+Determination of Equivalence Classes by Orthogonal Properties
+A Predicative Model for Self-Organizing Systems
+A Proposed Evolutionary Model
+The Recursive Nature of Descriptions: A Fixed Point
+Cybernetics of Taxation: The Optimization of Economic Participation
+Computation Models of Learners for Computer Assisted Learners for Computer Assisted Learning
+Uncertainty Analysis in Dynamic Systems
+Visual Image Processor II
+A Visual Image Processor
+A Visual Image Processor
+The Visual Image Processor
+Rooted Trees
+Classification and Enumeration of Autonomous Sequential Machines
+A Classification of Mappings Between Finite Sets and Some Applications
+Systems of Equivalence Relations
+Machine Coded Speech 
+Classification and Enumeration of Autonomous Sequential Machines
+The Interdependence Series Matrix: A Method for Determining the Serial Dependence of Neural Interspike Intervals
+A System of Equivalence Relations
+An Authomatic Stochastic Predictor
+Towards a Systematic Method of Behavior
+Cognitron Theory
+Loops in Computer Programs
+Discrete Two Dimensional Property Detectors
+The Significance of the Second Formant in Speech Intelligibility
+The Second Form and Speech Intelligibility
+Structural and Dynamic Forms of Speech
+Information Theory and Consumer Action
+Some Applications of Cybernetic Concepts in Social Sciences
+Autopoiesis the Organization of Living Systems its Characterization and a Model
+A Calculus for Self-Reference
+The Arithmetic of Closure
+Grounds for a Closed Logic
+Basic Concepts of Homeostasis
+Some Remarks on Changing Population
+Bionics
+Combined Population Papers
+Some Aspects in the Design of Biological Computers
+On Self-Organizing Systems and their Environments
+Mitotic Indices of Dviding and Differentiating Cells
+Circuitry of Clues to Platonic Ideation
+Bio-Logic
+Biological Ideas for the Engineer
+Communication Amongst Automata
+Logical Structure of Envioronment and its Internal Representation
+Molecular Bionics
+Computation in Neural Nets
+Perception, Representation and Symbolization
+Report by the President
+Physics and Anthropology
+Structural Model of Functional Interactions
+Bionics Principles
+Memory Without Record
+Computers in Music
+How to Tell the Birds from the Bees - The Ontogenesis of Information
+From Stimulus to Symbol
+Time and Memory
+The Numbers of Man
+Biological Principles of Information Storage and Retrieval
+What is Memory that it May have Hindsight and Foresight as well?
+Sounds and Music
+Memory and Inductive Inference
+Laws of Form
+Analysis and Synthesis of Cognitive Processes and Systems
+Molecular Ethology
+Cognitive Memory
+Bionics: Critique and Outlook
+Review of "Embodiments of Mind" by Warren S. McCullloch
+Obituary for Warren S. McCulloch
+Cognitive Memory
+Heuristics
+Evolution of Community
+Computing in the Semantic Domain
+Perception of the Future and the Future of Perception
+Technology: What will it mean to Librarians?
+Responsabilities of Competence
+Kybernetik einer Erkenntnistheorie
+On Constructing a Reality
+On Where do We Go From Here?
+An Episthemology for Living Things
+Notes pour un Epistemologie des Objects Vivents
+Giving with a Purpose The Cybernetics of Philantropy
+Culture and Biological Man
+Cybernetics of Cybernetics
+The Need of Perception
+A Study of a Family of Complex Systems, an Approach to the Investigation of Organisms Behavior
+On Temporal Characteristics of Behavior in Certain Complex Systems
+Rooted Trees
+Artificial Intelligence and Machines that Think
+Cylinders: A Relational Data Structure
+Man-like Machines: The Language Barrier
+Machine Use of Natural Language
+Photocell Field Counts Random Objects
+To Uncover to Deduce to Conclude
+Cylinders: A Relational Data Structure
+On the Realization of Linear Automata
+A New Homeostat
+Naural Modelling: Methodology, Techniques and a Multilinear Model for Information Processing
+The Cybernetics of Cognitive Processes
+Attitude and Context
+Sensory Homeostasis
+Accomplishment Summary
+BCL Publications
+Accomplishment Summary 66/67
+Some Principles of Preorganization in Self-organizing Systems
+Cybernetics Directory and Selected Bibliography
+Accomplishment Summary 67/68
+Annual Inventory of Research
+Accomplishment Summary 68/69
+Accomplishment Summary 69/70
+Accomplishment Summary 70/71
+BCL Publications
+Accomplishment Summary 71/72
+Direct Access Inteligence Systems
+Interpersonal Relational Networks
+The Fundamental Theorem of Ecology
+The Cybernetician: The Cybernetics of Cybernetics
+The Cybernetician: N2
+The Cybernetician: N3
+The Cybernetician: N4
+The Cybernetician: N5
+The Cybernetician: N6
+The Cybernetician: N7
+The Cybernetician: N8
+On Temporal Characteristics of Behavior in Certain Complex Systems
+Some Problems of Social Cybernetics
