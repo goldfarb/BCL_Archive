@@ -178,18 +178,19 @@ contrast each interface element along with corresponding script function
 The conclusive benchmark in the back-end development the production of an outward-facing interface by which documents could be searched, filtered and accessed.  Developing a multi-criteria search function was straightforward enough and could be done be wrapping SQL, a language designed for that exact purpose.  Filtering the results supplied, however, would be significantly more challenging.  The solution would be to use a "hidden ledger", that is, an invisible `div` element intended to hold ordinal codices that Javascript could reference in reordering search results on-screen.
 
 ### php query switch
-	case switch
-	which search field is used depends on radio button selected
+case switch
+which search field is used depends on radio button selected
 ### Page UI
 #### Results Parser (onLoad)
-	Before any After the page is rendered, the `<body onload>` function will be called.   This function, `parseResults()` will read session parameters from the UI as well as the search results from the DOM and perform a number of essential tasks:
-	UI elements and search result "bubbles" are rendered to the document.
-		* During this process, session parameters are evaluated to enable/disable actions
-		* eg. Authors 
-	Upon completion of this process, parseResults() is called from the `onload` trigger
-		* reads session parameters and results from DOM.
-		* computes order mappings for filter criteria and appends them to hidden `div`.
-		* if the the session parameters indicate first load, default rendering is applied.
+Before any After the page is rendered, the `<body onload>` function will be called.   This function, `parseResults()` will read session parameters from the UI as well as the search results from the DOM and perform a number of essential tasks:
+
+- UI elements and search result "bubbles" are rendered to the document.
+	* During this process, session parameters are evaluated to enable/disable actions
+	* eg. Authors 
+- Upon completion of this process, parseResults() is called from the `onload` trigger
+	* reads session parameters and results from DOM.
+	* computes order mappings for filter criteria and appends them to hidden `div`.
+	* if the the session parameters indicate first load, default rendering is applied.
 	
 #### Toggles
 ### Other 
