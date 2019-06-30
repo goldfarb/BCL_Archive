@@ -93,24 +93,116 @@ It should be noted that, due to rigorous encoding standards of XML, extensive va
 
 # Active Scripts
 
-In this section, a comprehensive account will be given of the scripts that are actively deployed on the server.  This includes references to peripheral content as well as the order in which scripts were deployed.  Publicly-accessible pages are implemented as custom Wordpress [templates](https://developer.wordpress.org/themes/template-files-section/page-template-files/#creating-custom-page-templates-for-global-use), comprising individual files made up of CSS, HTML, PHP, and Javascript within a single document.  Alternately, there is one "local" script used for populating the archive database from scratch, [db_pusher.php](#db_pusherphp); due its high execution time (~10 minutes), surpassing the conventional security-limits of a web-server, its execution must be scheduled using `cron` from the [host's control panel](https://websitesettings.com/login).
+In this section, a ? account will be given of the scripts that are actively deployed on the server.  This includes references to peripheral content as well as the order in which scripts were deployed.  Publicly-accessible pages are implemented as custom Wordpress [templates](https://developer.wordpress.org/themes/template-files-section/page-template-files/#creating-custom-page-templates-for-global-use), comprising individual files made up of CSS, HTML, PHP, and Javascript within a single document.  As the archive is currently using a theme called "Equable Lite", the 
 
-### upload_download.php
+Alternately, there is one "local" script used for populating the archive database from scratch, [db_pusher.php](#db_pusherphp); due its high execution time (~10 minutes), surpassing the conventional security-limits of a web-server, its execution must be scheduled using `cron` from the [host's control panel](https://websitesettings.com/login).
 
-The purpose of upload_download.php is to have a page where the control spreadsheet may be downloaded, modified, and then re-uploaded.
+## Database Compilation
 
-////left to finish:
-on reupload, contrast each row with existing,
+Culminating the process of establishing clear and consistent data structures, including text registration, schematization and homogenization, the database was compiled by running a server-side script, db_pusher.php.  The main purpose of this script was to integrate the various primary-source materials into [a comprehensive database] by executing SQL commands through PHP.
 
-if changed, borrow parser functions from db_pusher
-and update each row
+### Loading Wordpress
+As mentioned above, the script takes over 10 minutes to run from start to finish, and therefore cannot be executed via a webserver ie. by navigating to the host path via URL.  Besides necessitating that it therefore be run via an alternative method, this also means that Wordpress, which is normally loaded during URL access, is not automatically loaded.  Therefore, the first bit of code is borrowing Wordpress's database class, `$wpdb`, so that we may use it to perform our database operations.
 
-### db_pusher.php
-[finish commenting db pusher]
+```
+	# loads Wordpress relative to our theme's directory
+require_once(__DIR__.'/../../../wp-load.php'); 
+```
 
-### bcl_viewer.php
+Please note that there is no specific reason other than practical consistency to use Wordpress' database functions here as opposed to native PHP functions; simply, it obviates having to adopt a new syntax later on when writing Wordpress Templates, which mandate the use of `$wpdb` for security reasons.
+
+### Connecting to the Database
+
+The following lines of code connect to the archive's database using the endogenous Wordpress `$wpdb` class along with the database login parameters.
+
+```
+	# login to wpdb	
+global $wpdb;
+$wpdb = new wpdb('username','password','database','hostname');
+```
+Since `$wpdb` is a global classname, database operations can (and will!) be performed from anywhere in the code.  The next few lines use this class to connect to the database and query the CONTROLSHEET table, which may be populated with control sheet data as [documented](#database-modification) in the following section.
+```
+# login to wpdb	
+global $wpdb;
+$wpdb = new wpdb('username','password','database','hostname');
+
+	# create an array for CONTROLSHEET table data
+$control_sheet_rows = [];
+	# query CONTROLSHEET table data
+$control_sheet_query = "SELECT * FROM CONTROLSHEET";
+$control_sheet_results = $wpdb->get_results($wpdb->prepare($control_sheet_query,ARRAY_A));
+	# decode query results
+foreach($control_sheet_results as $control_sheet_result){
+	$control_sheet_rows[] =  json_decode(json_encode($control_sheet_result), true);
+}
+```
+Note that the results returned with `$wpdb->get_results()` must be decoded from JSON into a key-value hash and that a SQL query must be "prepared" before being sent. "Preparing" a query is a Wordpress security measure imposed to prevent a SQL injection attack.
 
 
+### Pushing the Database
+Next, global page and word counter variables will be declared to keep track of these entries separately so that every database table has its own independent numerical ID.
+```
+$total_pages=0;
+$total_words=0;
+```
+Henceforth, the script loops through every row in the control sheet, parsing and inserting data while linking the corresponding text.  For the ARTICLE, AUTHOR and ARTICLEAUTHOR tables, which are composed solely of control sheet data, the function `insert_row($row)` is employed to perform these database insertions, invoked in each consecutive step of the loop.
+
+The remaining code in the loop fills the PAGE and WORD tables from the XML files, using `$total_pages` and `$total_words` to assign unique IDs to these tables as the loop ensues.
+
+## Database Modification
+
+> NOTE: While this module is designed to allow user-friendly database updates, it must be used with caution!  Changes made to the database are permanent, and THE ID QUANTITY SHOULD NEVER BE UPDATED for any reason.  
+
+The purpose of upload_download.php is to have a page where the control spreadsheet may be downloaded, modified, and then re-uploaded, updating any differences or additions to the database. It consists of three principle mechanisms:
+* A user-interface for attaching and downloading control sheet files (.tsv)
+* Client-side script (Javascript) for facilitating UI functions, eg. creating files from DOM elements
+* Server-side script (PHP) for mediating between the UI and the database
+
+Note that .tsv (tab-separated-values) files are used for the control sheet as opposed to the more common .csv extension.  This is so as to avoid double usage of commas, which are used in formatting the control data.
+
+
+### User Interface
+
+The CSU page 
+
+There are two hidden `<textarea>` elements used for file manipulation.
+
+contrast each interface element along with corresponding script function
+
+
+### Javascript Functions
+
+### PHP Functions
+
+### Simple Searchable Viewer
+The conclusive benchmark in the back-end development the production of an outward-facing interface by which documents could be searched, filtered and accessed.  Developing a multi-criteria search function was straightforward enough and could be done be wrapping SQL, a language designed for that exact purpose.  Filtering the results supplied, however, would be significantly more challenging.  The solution would be to use a "hidden ledger", that is, an invisible `div` element intended to hold ordinal codices that Javascript could reference in reordering search results on-screen.
+
+### php query switch
+	case switch
+	which search field is used depends on radio button selected
+### Page UI
+#### Results Parser (onLoad)
+	Before any After the page is rendered, the `<body onload>` function will be called.   This function, `parseResults()` will read session parameters from the UI as well as the search results from the DOM and perform a number of essential tasks:
+	UI elements and search result "bubbles" are rendered to the document.
+		* During this process, session parameters are evaluated to enable/disable actions
+		* eg. Authors 
+	Upon completion of this process, parseResults() is called from the `onload` trigger
+		* reads session parameters and results from DOM.
+		* computes order mappings for filter criteria and appends them to hidden `div`.
+		* if the the session parameters indicate first load, default rendering is applied.
+	
+#### Toggles
+### Other 
+
+# Helpful Tips
+
+This final section will present some helpful tips and tricks for upcoming steps in the archive's development.
+
+ how to query page lengths
+
+more search criteria eg first names ...
+
+more session parameter actions eg author query relevance
 <!-- 
 ### Collation and OCR - Yelena w Sofia, Sara
 The first step was the collation of a burgeoning repository of scanned TIFF images into organized PDF documents corresponding to all publications and their Fiche locations. 

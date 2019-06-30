@@ -154,39 +154,53 @@ display:none;
 
 <?php
 
-			// global vars for query type (use later for highlighting results)
+		# by default, set empty search term, target and denote the first page load
 	$search_term='';
 	$search_target='text';
 	$first_load=1;
 	
+		# check if there are query variables in the page load
 	if(sizeof($_GET)>0){
-		$first_load =0;
+			# rule out first page load
+		$first_load = 0;
+			# and read search parameters
 		$search_term = $_GET['search_term'];
-		$search_target=$_GET['search_target'];
+		$search_target = $_GET['search_target'];
 	}
+		# create arrays for search results and metadata,
 	$search_results=[];
+		# number of hits per search result,
 	$result_frequencies=[];
+		# and total number of results
 	$number_of_results;
 		
-			#login to wpdb
+		# login to wpdb
 	global $wpdb;
 	$wpdb = new wpdb('username','password','database','hostname');
 
-	function arrayToCSString($arr){
+		# function to convert an array to a comma-separated string
+			# useful for formatting SQL queries
+	function arrayToCommaSeparated($arr){
+			# remove and return the first element of array
 		$output_string=array_shift($arr);
+			# concatenate the element followed by a comma to the output string
 		foreach($arr as $ar){
-			$output_string=$output_string.', '.$ar;
+			$output_string=$output_string .', '.$ar;
 		}
 		return $output_string;
 	}
 ?>
 
 <?php
+		# the following case switch formats a SQL query depending on the field being searched
 	 switch ($search_target){
 	 	case 'text':
+	 			# an empty list for the IDs of the results
 			$articleIds=[];
+				# searches for occurrences of search term in page text content, returns matching Article + Page IDs
 			$page_query = "SELECT ArticleId,PageText FROM PAGE WHERE PageText LIKE '%%" . $search_term . "%'";
 			$page_results = $wpdb->get_results(($wpdb->prepare($page_query,ARRAY_A)));
+				# tally number of results associated with each article
 			foreach ($page_results as $page_result){
 				$articleId = json_decode(json_encode($page_result), true)['ArticleId'];
 				if(in_array($articleId,$articleIds)==FALSE){
@@ -196,54 +210,58 @@ display:none;
 					$result_frequencies[$articleId]+=1;
 				}
 			}
-			$sum_of_frequencies=array_sum($result_frequencies);
-			
-			
-		
-			$article_query = "SELECT * FROM ARTICLE WHERE ArticleId IN (" . arrayToCSString($articleIds) . ")";
+				# total number of hits across all page results
+			$sum_of_frequencies = array_sum($result_frequencies);
+				# query those articles associated with page results
+			$article_query = "SELECT * FROM ARTICLE WHERE ArticleId IN (" . arrayToCommaSeparated($articleIds) . ")";
 			$article_results = $wpdb->get_results(($wpdb->prepare($article_query,ARRAY_A)));
+				# and push them into results array
 			foreach ($article_results as $article_result){
 				$search_results[]=json_decode(json_encode($article_result), true);
 			}
-			
 			break;
 			
 	 	case 'authors':
+	 			# an empty list for the IDs of the results
 	 		$authorIds=[];
+	 			# searches for matches of search term across authors' last names, returns matching Author IDs
 	 		$author_query= "SELECT AuthorId FROM AUTHOR WHERE LastName LIKE '%%" . $search_term ."%'";
 	 		$author_results= $wpdb->get_results(($wpdb->prepare($author_query,ARRAY_A)));
+	 			# push IDs of matching authors into results array
 	 		foreach ($author_results as $author_result){
 				$authorIds[] = json_decode(json_encode($author_result), true)['AuthorId'];
 			}
-			
+				# put together list of articles associated with author results
 			$articleIds=[];
-			$articleauthor_query = "SELECT ArticleId FROM ARTICLEAUTHOR WHERE AuthorId IN (" . arrayToCSString($authorIds) . ")";
+			$articleauthor_query = "SELECT ArticleId FROM ARTICLEAUTHOR WHERE AuthorId IN (" . arrayToCommaSeparated($authorIds) . ")";
 			$articleauthor_results=$wpdb->get_results(($wpdb->prepare($articleauthor_query,ARRAY_A)));
 	 		foreach ($articleauthor_results as $articleauthor_result){
 				$articleIds[] = json_decode(json_encode($articleauthor_result), true)['ArticleId'];
 			}
-			
-			$article_query = "SELECT * FROM ARTICLE WHERE ArticleId IN (" . arrayToCSString($articleIds) . ")";
+				# and query those articles
+			$article_query = "SELECT * FROM ARTICLE WHERE ArticleId IN (" . arrayToCommaSeparated($articleIds) . ")";
 			$article_results = $wpdb->get_results(($wpdb->prepare($article_query,ARRAY_A)));
 			foreach ($article_results as $article_result){
 				$search_results[]=json_decode(json_encode($article_result), true);
-			}
-			
+			}		
 			break;
-	 	
+	 			# search the matches of search term in titles and returns article attributes
 	 	case 'titles':
-	 		$article_query = "SELECT * FROM ARTICLE WHERE Title LIKE '%%" . $search_term . "%'";
+	 		$article_query = "SELECT * FROM ARTICLE WHERE Title LIKE '%%" . $search_term . "%'"
 	 		$article_results = $wpdb->get_results(($wpdb->prepare($article_query,ARRAY_A)));
 			foreach ($article_results as $article_result){
 				$search_results[]=json_decode(json_encode($article_result), true);
-			}
-	 	
+			} 	
 			break;
 	}
-	
+		# total number of resulting articles
 	$number_of_results=sizeof($search_results);
 ?>
 
+
+	<!-- 
+	DEFINE THE UI LAYOUT INCLUDING TOP BAR, NAV BUTTONS AND BROWSER/VIEW WINDOW
+	 -->
 <html>
 	<body onload="parse_results(<?php echo "{$first_load}" . ",'" . $search_target . "'";?>)">
 	<div class="desktop-only">
@@ -317,42 +335,43 @@ display:none;
 		</div>
 		<div class='main-view'>
 			<div id="results">
-			<?php
-				$result_count=0;
-				foreach($search_results as $search_result){
-					$author_ids=[];
-					$articleauthor_query = "SELECT AuthorId FROM ARTICLEAUTHOR WHERE ArticleId=".$search_result['ArticleId'];
-					$articleauthor_results= $wpdb->get_results(($wpdb->prepare($articleauthor_query,ARRAY_A)));
+				<?php
+					$result_count=0;
+						# unpacks search results array 
+					foreach($search_results as $search_result){
+						$author_ids=[];
+						$articleauthor_query = "SELECT AuthorId FROM ARTICLEAUTHOR WHERE ArticleId=".$search_result['ArticleId'];
+						$articleauthor_results= $wpdb->get_results(($wpdb->prepare($articleauthor_query,ARRAY_A)));
 					
-					foreach ($articleauthor_results as $articleauthor_result){
-						$author_ids[]= json_decode(json_encode($articleauthor_result), true)['AuthorId'];
+						foreach ($articleauthor_results as $articleauthor_result){
+							$author_ids[]= json_decode(json_encode($articleauthor_result), true)['AuthorId'];
+						}
+						$authors=[];
+						$author_query = "SELECT * FROM AUTHOR WHERE AuthorId IN (" . arrayToCommaSeparated($author_ids) . ")";
+						$author_results = $wpdb->get_results(($wpdb->prepare($author_query,ARRAY_A)));
+						foreach ($author_results as $author_result){
+							$authors[]= json_decode(json_encode($author_result), true);
+						}
+								//ref Ben Roux @ https://stackoverflow.com/questions/10757671/how-to-remove-line-breaks-no-characters-from-the-string/10757755#10757755
+						echo "<div id='result_" . $result_count . "' class='result_bubble' onclick=\"loadArticle('" . preg_replace('/\r|\n/','',$search_result['FileUrl']) . "','".$search_term."')\">";
+						echo "<div class='result_title'>".$search_result['Title']."</div>";
+						echo "<div>&nbsp&nbsp;By:&nbsp;";
+						$first_author=array_shift($authors);
+						echo "</div><div class='result_author'>" . $first_author['FirstName'] . $first_author['MiddleName'] .' '. $first_author['LastName'] ."</div>";
+						foreach ($authors as $author){
+									//later, make names links?
+							echo "<div class='result_author'>, " . $author['FirstName'] . $author['MiddleName'] .' ' . $author['LastName'] ."</div>";
+						}
+						echo "<div class='result_fiche'>&nbsp;&nbsp;Fiche #".$search_result['Fiche']."&nbsp;</div>";
+						if($search_target=='text' and $first_load==0){
+						
+							echo "<div>&nbsp;</div><div class='result_frequency'>".$result_frequencies[$search_result['ArticleId']]."</div><div>". "&nbsp;matches in document.</div>";
+						
+						}
+						echo "</div>";
+						$result_count++;
 					}
-					$authors=[];
-					$author_query = "SELECT * FROM AUTHOR WHERE AuthorId IN (" . arrayToCSString($author_ids) . ")";
-					$author_results = $wpdb->get_results(($wpdb->prepare($author_query,ARRAY_A)));
-					foreach ($author_results as $author_result){
-						$authors[]= json_decode(json_encode($author_result), true);
-					}
-							//ref Ben Roux @ https://stackoverflow.com/questions/10757671/how-to-remove-line-breaks-no-characters-from-the-string/10757755#10757755
-					echo "<div id='result_" . $result_count . "' class='result_bubble' onclick=\"loadArticle('" . preg_replace('/\r|\n/','',$search_result['FileUrl']) . "','".$search_term."')\">";
-					echo "<div class='result_title'>".$search_result['Title']."</div>";
-					echo "<div>&nbsp&nbsp;By:&nbsp;";
-					$first_author=array_shift($authors);
-					echo "</div><div class='result_author'>" . $first_author['FirstName'] . $first_author['MiddleName'] .' '. $first_author['LastName'] ."</div>";
-					foreach ($authors as $author){
-								//later, make names links?
-						echo "<div class='result_author'>, " . $author['FirstName'] . $author['MiddleName'] .' ' . $author['LastName'] ."</div>";
-					}
-					echo "<div class='result_fiche'>&nbsp;&nbsp;Fiche #".$search_result['Fiche']."&nbsp;</div>";
-					if($search_target=='text' and $first_load==0){
- 						
- 						echo "<div>&nbsp;</div><div class='result_frequency'>".$result_frequencies[$search_result['ArticleId']]."</div><div>". "&nbsp;matches in document.</div>";
- 						
- 					}
-					echo "</div>";
-					$result_count++;
-				}
-			?>
+				?>
 			</div>		
 		</div>
 	</div>
