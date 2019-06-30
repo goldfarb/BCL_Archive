@@ -8,6 +8,9 @@ Home to the back-end of bclarchive.net, presently browsable at http://bclarchive
 * [Helper Scripts](#helper-scripts)
 * [Hosted Content](#hosted-content)
 * [Active Scripts](#active-scripts)
+	* [Database Compilation](#database-compilation)
+	* [Database Modification](#database-modification)
+	* [Simple Searchable Viewer](#simple-searchable-viewer)
 
 ### Repository Map
 
@@ -93,7 +96,7 @@ It should be noted that, due to rigorous encoding standards of XML, extensive va
 
 # Active Scripts
 
-In this section, a ? account will be given of the scripts that are actively deployed on the server.  This includes references to peripheral content as well as the order in which scripts were deployed.  Publicly-accessible pages are implemented as custom Wordpress [templates](https://developer.wordpress.org/themes/template-files-section/page-template-files/#creating-custom-page-templates-for-global-use), comprising individual files made up of CSS, HTML, PHP, and Javascript within a single document.  As the archive is currently using a theme called "Equable Lite", the 
+In this section, a high-level overview will be given of the scripts that are actively deployed on the server.  This includes references to peripheral content as well as the order in which scripts were deployed.  Publicly-accessible pages are implemented as custom Wordpress [templates](https://developer.wordpress.org/themes/template-files-section/page-template-files/#creating-custom-page-templates-for-global-use), comprising individual files made up of CSS, HTML, PHP, and Javascript within a single document.  As the archive is currently using a theme called "Equable Lite", the 
 
 Alternately, there is one "local" script used for populating the archive database from scratch, [db_pusher.php](#db_pusherphp); due its high execution time (~10 minutes), surpassing the conventional security-limits of a web-server, its execution must be scheduled using `cron` from the [host's control panel](https://websitesettings.com/login).
 
@@ -109,7 +112,7 @@ As mentioned above, the script takes over 10 minutes to run from start to finish
 require_once(__DIR__.'/../../../wp-load.php'); 
 ```
 
-Please note that there is no specific reason other than practical consistency to use Wordpress' database functions here as opposed to native PHP functions; simply, it obviates having to adopt a new syntax later on when writing Wordpress Templates, which mandate the use of `$wpdb` for security reasons.
+Please note that is only necessary because the script is not being accessed through the browser, and that in Wordpress Templates this normally is loaded by default.
 
 ### Connecting to the Database
 
@@ -195,7 +198,7 @@ Before any After the page is rendered, the `<body onload>` function will be call
 #### Toggles
 ### Other 
 
-# Helpful Tips
+# Helpful Tips/ Next Steps
 
 This final section will present some helpful tips and tricks for upcoming steps in the archive's development.
 
