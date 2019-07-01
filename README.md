@@ -152,9 +152,11 @@ Henceforth, the script loops through every row in the control sheet, parsing and
 
 The remaining code in the loop fills the PAGE and WORD tables from the XML files, using `$total_pages` and `$total_words` to assign unique IDs to these tables as the loop ensues.
 
+> NOTE: In keeping with the DRY (don't-repeat-yourself) paradigm, there is no column in the ARTICLE table for number-of-pages.  Such information may be formulated by executing a query as follows: `SELECT * FROM PAGES WHERE ArticleId=n` and then counting the number of results...
+
 ## Database Modification
 
-> NOTE: While this module is designed to allow user-friendly database updates, it must be used with caution!  Changes made to the database are permanent, and THE **ID** QUANTITY SHOULD NEVER BE UPDATED for any reason.  
+> NOTE: While this module is designed to allow user-friendly database updates, it must be used with caution!  Changes made to the database are permanent, and THE **ID** COLUMN SHOULD NEVER BE MODIFIED for any reason.  
 
 The purpose of upload_download.php is to have a page where the control spreadsheet may be downloaded, modified, and then re-uploaded, updating any differences or additions to the database. It consists of three principle mechanisms:
 * A user-interface for attaching and downloading control sheet files (.tsv)
@@ -210,22 +212,20 @@ The user may select various sorting parameters including:
 	* Fiche (default)
 	* Reverse (reverses the apparent order of current results)
 	
-Whenever a user presses a button,function is applied, which reconstructs the result `div`s found in the main view
-
-according to the order mappings read from the "hidden ledger".
-
- the applyCritFilter() 
+Whenever a user presses a button, a Javascript function, `applyCritFilter()`, is called that reconstructs the `results` div according to the specified criterion, save for the "reverse order" button, which calls its own function, `reverseSort()`.   These functions, as well as the functional system as a whole, may be more fully understood by consulting the code which is meticulously annotated.
 
 ### Continued Development
 
- how to query page lengths
+This final section will briefly suggest possible directions from which development may be picked up.
+* first and foremost, visual re-design of the UI
+*  adding more search fields/ level-of-detail
+	* eg. search by first, middle names ...
+	* more detailed information about distribution of search results
+		* eg. results-per-page, results-per-author
+* embed hyperlinks into search results
+	* eg. author names link to author-sort filter
 
-This final section will present some helpful tips and tricks for upcoming steps in the archive's development.
-*  more search criteria/ detail eg first names ...
-* make names links
-* more session parameter actions eg author query relevance
-
-
+Please direct any questions to Edmund at ned.eisenberg@gmail.com or 608-692-0889.
 <!-- 
 ### Collation and OCR - Yelena w Sofia, Sara
 The first step was the collation of a burgeoning repository of scanned TIFF images into organized PDF documents corresponding to all publications and their Fiche locations. 
