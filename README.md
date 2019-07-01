@@ -11,6 +11,7 @@ Home to the back-end of bclarchive.net, presently browsable at http://bclarchive
 	* [Database Compilation](#database-compilation)
 	* [Database Modification](#database-modification)
 	* [Simple Searchable Viewer](#simple-searchable-viewer)
+* [Continued Development](#continued-development)
 
 ### Repository Map
 
@@ -141,7 +142,6 @@ foreach($control_sheet_results as $control_sheet_result){
 ```
 Note that the results returned with `$wpdb->get_results()` must be decoded from JSON into a key-value hash and that a SQL query must be "prepared" before being sent. "Preparing" a query is a Wordpress security measure imposed to prevent a SQL injection attack.
 
-
 ### Pushing the Database
 Next, global page and word counter variables will be declared to keep track of these entries separately so that every database table has its own independent numerical ID.
 ```
@@ -166,47 +166,57 @@ Note that .tsv (tab-separated-values) files are used for the control sheet as op
 
 ### User Interface
 
-The CSU page 
+The UI comprises two functions, the uploading and downloading of the control spreadsheet.  If an administrator wants to make changes to any given metadata, they may, as such, download a current copy of the control sheet, make changes using a program such as Numbers or Excel and re-upload the updated sheet through the page interface.
 
-There are two hidden `<textarea>` elements used for file manipulation.
+Under the hood, the interface works by unpacking the uploaded file contents into a hidden input form with id=`hidden_tsv_input`, submitting the quantities through HTTP POST, updating the database through PHP, and then returning the updated quantities into a hidden div with id=`hidden_tsv_output`, from which a file may be synthesized with Javascript; these functions are explained in greater depth within the comments.	
 
-contrast each interface element along with corresponding script function
+## Simple Searchable Viewer
+The ultimate benchmark in the back-end development was the assembly of an basic user-interface by which documents could be searched under numerous filters and viewed.  As more work on the front-end is definitively needed, this section will attempt to go into as much detail as possible in order to facilitate continuation by a front-end developer coming in at this juncture.
 
 
-### Javascript Functions
 
-### PHP Functions
-
-### Simple Searchable Viewer
-The conclusive benchmark in the back-end development the production of an outward-facing interface by which documents could be searched, filtered and accessed.  Developing a multi-criteria search function was straightforward enough and could be done be wrapping SQL, a language designed for that exact purpose.  Filtering the results supplied, however, would be significantly more challenging.  The solution would be to use a "hidden ledger", that is, an invisible `div` element intended to hold ordinal codices that Javascript could reference in reordering search results on-screen.
+Developing a single-query search function was straightforward enough and was accomplished by wrapping SQL, a language designed for that exact purpose, in PHP functions.  Filtering the supplied results on the client-side, however, would be significantly more challenging.  The solution was to create a "hidden ledger", that is, an invisible `div` element, where various order mappings could be stored and referenced by Javascript.
 
 ### php query switch
 case switch
 which search field is used depends on radio button selected
-### Page UI
-#### Results Parser (onLoad)
-Before any After the page is rendered, the `<body onload>` function will be called.   This function, `parseResults()` will read session parameters from the UI as well as the search results from the DOM and perform a number of essential tasks:
 
-- UI elements and search result "bubbles" are rendered to the document.
-	* During this process, session parameters are evaluated to enable/disable actions
-	* eg. Authors 
-- Upon completion of this process, parseResults() is called from the `onload` trigger
-	* reads session parameters and results from DOM.
-	* computes order mappings for filter criteria and appends them to hidden `div`.
-	* if the the session parameters indicate first load, default rendering is applied.
+### Page UI
+- UI elements may and search result "bubbles" are rendered to the document.
+* Session parameters, such as number of results and target field, are written into the UI.
+
+#### Results Parser (onLoad)
+Once PHP has finished supplying the search results and all HTML has been fully rendered to the page, the function, `parseResults()`, will be triggered by the `body onload` event.   This function will read "session parameters" from the UI as well as the search results from the DOM in order to perform a number of tasks:
+* reads session parameters and results from DOM.
+* computes order mappings for filter buttons and appends them to "hidden ledger".
+* Session parameters are evaluated to enable/disable actions (see toggle buttons)
+	* eg. Relevance is disabled by default, since there is no search term on the first page load.
+* Default is rendering all documents in order of the [BCL index](http://bclarchive.net/fichedir/fiche0_WilsonK_DayDJohn_AuthorIndex1957-1976.pdf)
+		
+#### Toggle Buttons
+The user may select various sorting parameters including:
+	* Relevance (number of hits per article)
+	* Title, alphabetically
+	* Author, alphabetically
+	* Fiche (default)
+	* Reverse (reverses the apparent order of current results)
 	
-#### Toggles
+Whenever a user presses a button, the applyCritFilter() function is applied, which reconstructs the result `div`s according to the order mappings read from the "hidden ledger".
+
 ### Other 
 
-# Helpful Tips/ Next Steps
-
-This final section will present some helpful tips and tricks for upcoming steps in the archive's development.
+# Continued Development
 
  how to query page lengths
 
-more search criteria eg first names ...
+This final section will present some helpful tips and tricks for upcoming steps in the archive's development.
+*  more search criteria/ detail eg first names ...
+* make names links
+* more session parameter actions eg author query relevance
 
-more session parameter actions eg author query relevance
+
+
+
 <!-- 
 ### Collation and OCR - Yelena w Sofia, Sara
 The first step was the collation of a burgeoning repository of scanned TIFF images into organized PDF documents corresponding to all publications and their Fiche locations. 
