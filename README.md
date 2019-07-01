@@ -171,29 +171,37 @@ The UI comprises two functions, the uploading and downloading of the control spr
 Under the hood, the interface works by unpacking the uploaded file contents into a hidden input form with id=`hidden_tsv_input`, submitting the quantities through HTTP POST, updating the database through PHP, and then returning the updated quantities into a hidden div with id=`hidden_tsv_output`, from which a file may be synthesized with Javascript; these functions are explained in greater depth within the comments.	
 
 ## Simple Searchable Viewer
-The ultimate benchmark in the back-end development was the assembly of an basic user-interface by which documents could be searched under numerous filters and viewed.  As more work on the front-end is definitively needed, this section will attempt to go into as much detail as possible in order to facilitate continuation by a front-end developer coming in at this juncture.
+The ultimate benchmark in the back-end development was the assembly of an basic user-interface by which documents could be searched under numerous filters and viewed.  As more work on the front-end is fully anticipated, this section will attempt to go into as much detail as possible in order to facilitate continuation by a front-end developer at this juncture.
 
+Although developing a single-query search function was simple enough -- accomplished by wrapping SQL, a language designed for that exact purpose, in PHP functions -- filtering the supplied results on the client-side would be significantly more challenging.  The solution was to create a "hidden ledger", that is, an invisible `div` element, where various order mappings -- in the format of comma-separated indices -- could be stored and referenced by Javascript.
 
-
-Developing a single-query search function was straightforward enough and was accomplished by wrapping SQL, a language designed for that exact purpose, in PHP functions.  Filtering the supplied results on the client-side, however, would be significantly more challenging.  The solution was to create a "hidden ledger", that is, an invisible `div` element, where various order mappings could be stored and referenced by Javascript.
-
-### php query switch
-case switch
-which search field is used depends on radio button selected
+In the following subsections, the mechanics of the UI, filtering functions, and suggestions for improvement will be discussed:
 
 ### Page UI
-- UI elements may and search result "bubbles" are rendered to the document.
-* Session parameters, such as number of results and target field, are written into the UI.
+- Menu
+	- Search bar
+	- Filter Buttons
+	- Session parameters
+		- such as number of results and target field, are written into the UI.
+	- Hidden Ledger
+		- found in the div `class="below_bar"`
+		- separate div for each ordering
+			- eg. result frequency, author name, etc
+			- inner HTML contains comma-separated numbers representing result order
+- Main-view
+	- Result Bubbles
+		- UI elements may and search result "bubbles" are rendered to the document.
+	- `iframe` viewer
 
-#### Results Parser (onLoad)
+### Results Parser (onLoad)
 Once PHP has finished supplying the search results and all HTML has been fully rendered to the page, the function, `parseResults()`, will be triggered by the `body onload` event.   This function will read "session parameters" from the UI as well as the search results from the DOM in order to perform a number of tasks:
 * reads session parameters and results from DOM.
-* computes order mappings for filter buttons and appends them to "hidden ledger".
-* Session parameters are evaluated to enable/disable actions (see toggle buttons)
+* Computes order mappings from the supplied results and appends them to "hidden ledger".
+* Evaluates session parameters so as to enable/disable specific actions (see toggle buttons)
 	* eg. Relevance is disabled by default, since there is no search term on the first page load.
 * Default is rendering all documents in order of the [BCL index](http://bclarchive.net/fichedir/fiche0_WilsonK_DayDJohn_AuthorIndex1957-1976.pdf)
 		
-#### Toggle Buttons
+#### Filter Functions
 The user may select various sorting parameters including:
 	* Relevance (number of hits per article)
 	* Title, alphabetically
@@ -201,11 +209,15 @@ The user may select various sorting parameters including:
 	* Fiche (default)
 	* Reverse (reverses the apparent order of current results)
 	
-Whenever a user presses a button, the applyCritFilter() function is applied, which reconstructs the result `div`s according to the order mappings read from the "hidden ledger".
+Whenever a user presses a button,function is applied, which reconstructs the result `div`s found in the main view
 
-### Other 
+according to the order mappings read from the "hidden ledger".
 
-# Continued Development
+ the applyCritFilter() 
+
+
+
+#### Continued Development
 
  how to query page lengths
 
