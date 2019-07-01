@@ -178,20 +178,21 @@ Although developing a single-query search function was simple enough -- accompli
 In the following subsections, the mechanics of the UI, filtering functions, and suggestions for improvement will be discussed:
 
 ### Page UI
+The page user-interface is divided into three main parts: a menu, hidden ledger and a view-frame.  The menu, contained within a bar at the top of the window, permits text and navigational input from the user and provides heads-up information, such as the total number of results.  The view-frame displays a list of search result "bubbles", defined by the `.result_bubble` style class, or, alternately, an `iframe` to the PDF document directed by clicking any of these bubbles.  Finally, mappings of alternate result orderings (used by filters) are found in the "hidden ledger" located between the aforementioned window-regions.  The following is a rough outline of the DOM hierarchy:
 - Menu
 	- Search bar
 	- Filter Buttons
 	- Session parameters
 		- such as number of results and target field, are written into the UI.
-	- Hidden Ledger
-		- found in the div `class="below_bar"`
-		- separate div for each ordering
-			- eg. result frequency, author name, etc
-			- inner HTML contains comma-separated numbers representing result order
-- Main-view
+- Hidden Ledger
+	- found in the div `class="below_bar"`
+	- separate div for each ordering
+		- eg. result frequency, author name, etc
+		- inner HTML contains comma-separated numbers representing result order
+- View-frame
 	- Result Bubbles
 		- UI elements may and search result "bubbles" are rendered to the document.
-	- `iframe` viewer
+		- `iframe` to PDF document 
 
 ### Results Parser (onLoad)
 Once PHP has finished supplying the search results and all HTML has been fully rendered to the page, the function, `parseResults()`, will be triggered by the `body onload` event.   This function will read "session parameters" from the UI as well as the search results from the DOM in order to perform a number of tasks:
@@ -215,8 +216,6 @@ according to the order mappings read from the "hidden ledger".
 
  the applyCritFilter() 
 
-
-
 #### Continued Development
 
  how to query page lengths
@@ -225,8 +224,6 @@ This final section will present some helpful tips and tricks for upcoming steps 
 *  more search criteria/ detail eg first names ...
 * make names links
 * more session parameter actions eg author query relevance
-
-
 
 
 <!-- 
