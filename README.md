@@ -154,7 +154,7 @@ The remaining code in the loop fills the PAGE and WORD tables from the XML files
 
 ## Database Modification
 
-> NOTE: While this module is designed to allow user-friendly database updates, it must be used with caution!  Changes made to the database are permanent, and THE ID QUANTITY SHOULD NEVER BE UPDATED for any reason.  
+> NOTE: While this module is designed to allow user-friendly database updates, it must be used with caution!  Changes made to the database are permanent, and THE **ID** QUANTITY SHOULD NEVER BE UPDATED for any reason.  
 
 The purpose of upload_download.php is to have a page where the control spreadsheet may be downloaded, modified, and then re-uploaded, updating any differences or additions to the database. It consists of three principle mechanisms:
 * A user-interface for attaching and downloading control sheet files (.tsv)
@@ -202,7 +202,7 @@ Once PHP has finished supplying the search results and all HTML has been fully r
 	* eg. Relevance is disabled by default, since there is no search term on the first page load.
 * Default is rendering all documents in order of the [BCL index](http://bclarchive.net/fichedir/fiche0_WilsonK_DayDJohn_AuthorIndex1957-1976.pdf)
 		
-#### Filter Functions
+### Filter Functions
 The user may select various sorting parameters including:
 	* Relevance (number of hits per article)
 	* Title, alphabetically
@@ -216,7 +216,7 @@ according to the order mappings read from the "hidden ledger".
 
  the applyCritFilter() 
 
-#### Continued Development
+### Continued Development
 
  how to query page lengths
 
