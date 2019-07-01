@@ -211,7 +211,6 @@ The user may select various sorting parameters including:
 	* Author, alphabetically
 	* Fiche (default)
 	* Reverse (reverses the apparent order of current results)
-	
 Whenever a user presses a button, a Javascript function, `applyCritFilter()`, is called that reconstructs the `results` div according to the specified criterion, save for the "reverse order" button, which calls its own function, `reverseSort()`.   These functions, as well as the functional system as a whole, may be more fully understood by consulting the code which is meticulously annotated.
 
 ### Continued Development

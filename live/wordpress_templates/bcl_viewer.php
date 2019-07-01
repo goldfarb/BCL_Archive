@@ -154,9 +154,9 @@ display:none;
 
 <?php
 
-		# by default, set empty search term, target and denote the first page load
+		# by default, set empty search term, field and denote the first page load
 	$search_term='';
-	$search_target='text';
+	$target_field='text';
 	$first_load=1;
 	
 		# check if there are query variables in the page load
@@ -165,7 +165,7 @@ display:none;
 		$first_load = 0;
 			# and read search parameters
 		$search_term = $_GET['search_term'];
-		$search_target = $_GET['search_target'];
+		$target_field = $_GET['target_field'];
 	}
 		# create arrays for search results and metadata,
 	$search_results=[];
@@ -176,6 +176,7 @@ display:none;
 		
 		# login to wpdb
 	global $wpdb;
+		# credentials removed from github
 	$wpdb = new wpdb('username','password','database','hostname');
 
 		# function to convert an array to a comma-separated string
@@ -193,7 +194,7 @@ display:none;
 
 <?php
 		# the following case switch formats a SQL query depending on the field being searched
-	 switch ($search_target){
+	 switch ($target_field){
 	 	case 'text':
 	 			# an empty list for the IDs of the results
 			$articleIds=[];
@@ -247,7 +248,7 @@ display:none;
 			break;
 	 			# search the matches of search term in titles and returns article attributes
 	 	case 'titles':
-	 		$article_query = "SELECT * FROM ARTICLE WHERE Title LIKE '%%" . $search_term . "%'"
+	 		$article_query = "SELECT * FROM ARTICLE WHERE Title LIKE '%%" . $search_term . "%'";
 	 		$article_results = $wpdb->get_results(($wpdb->prepare($article_query,ARRAY_A)));
 			foreach ($article_results as $article_result){
 				$search_results[]=json_decode(json_encode($article_result), true);
@@ -263,7 +264,7 @@ display:none;
 	DEFINE THE UI LAYOUT INCLUDING TOP BAR, NAV BUTTONS AND BROWSER/VIEW WINDOW
 	 -->
 <html>
-	<body onload="parse_results(<?php echo "{$first_load}" . ",'" . $search_target . "'";?>)">
+	<body onload="parse_results(<?php echo "{$first_load}" . ",'" . $target_field . "'";?>)">
 	<div class="desktop-only">
 		<div class='top-bar'>
 			<div>
@@ -275,7 +276,7 @@ display:none;
 				<form action="http://bclarchive.net/browse" method='GET'>
 					<input name='search_term'>
 					<div>&nbsp;in&nbsp;</div>
-					<select name='search_target'>
+					<select name='target_field'>
 						<option value='text'>Text</option>
 						<option value='authors'>Author</option>
 						<option value='titles'>Title</option>
@@ -289,16 +290,16 @@ display:none;
 				<div>&nbsp;Sort by:&nbsp;</div>
 			
 				<label class=toggle-select>
-					<input name='filter_type' type="radio" value='all' onclick='applyCritFilter("relevance")' <?php if ($search_target=='authors' or $search_target=='titles' or $search_term=='' or $first_load){echo "disabled ";} if($search_target=='text'){echo 'checked';}?>>
+					<input name='filter_type' type="radio" value='all' onclick='applyCritFilter("relevance")' <?php if ($target_field=='authors' or $target_field=='titles' or $search_term=='' or $first_load){echo "disabled ";} if($target_field=='text'){echo 'checked';}?>>
 					<div class="toggle-button">RELEVANCE</div>
 				</label><label class=toggle-select>
-					<input name='filter_type' type="radio" value='title' onclick='applyCritFilter("title")' <?php if ($search_target=='authors'){echo "checked";}?>>
+					<input name='filter_type' type="radio" value='title' onclick='applyCritFilter("title")' <?php if ($target_field=='authors'){echo "checked";}?>>
 					<div class="toggle-button">TITLE</div>
 				</label><label class=toggle-select>
 					<input name='filter_type' type="radio" value='author' onclick='applyCritFilter("author")' >
 					<div class="toggle-button">AUTHOR</div>
 				</label><label class=toggle-select>
-					<input name='filter_type' type="radio" value='fiche' onclick='applyCritFilter("fiche")' <?php if ($search_target=='titles' or $search_target=='authors' or $search_term=='' or $first_load){echo "checked";}?>>
+					<input name='filter_type' type="radio" value='fiche' onclick='applyCritFilter("fiche")' <?php if ($target_field=='titles' or $target_field=='authors' or $search_term=='' or $first_load){echo "checked";}?>>
 					<div class="toggle-button">FICHE</div>
 				</label>
 
@@ -308,6 +309,9 @@ display:none;
 					</div>
 				</label>
 				
+					<!-- 
+					inlay session parameter, "number of results", into DOM
+					 -->
 				<div id='results_monitor' style='display:inline-block;'>
 					<div>&nbsp;
 						<?php
@@ -327,13 +331,22 @@ display:none;
 				<div class='view_directive' style='display:none;' id='back_to_results' onclick='backToResults()'>Back To Results</div> 
 			</div>
 		</div>
+			<!-- 
+			"hidden ledger"
+			 -->
 		<div class='below_bar'>
 			<div class='hidden' id='frequencies_ledger'></div>
 			<div class='hidden' id='authors_ledger'></div>
 			<div class='hidden' id='titles_ledger'></div>
 			<div class='hidden' id='fiches_ledger'></div>
 		</div>
+			<!-- 
+			view + browse window	
+			 -->
 		<div class='main-view'>
+				<!-- 
+				results div
+				 -->
 			<div id="results">
 				<?php
 					$result_count=0;
@@ -359,11 +372,11 @@ display:none;
 						$first_author=array_shift($authors);
 						echo "</div><div class='result_author'>" . $first_author['FirstName'] . $first_author['MiddleName'] .' '. $first_author['LastName'] ."</div>";
 						foreach ($authors as $author){
-									//later, make names links?
+									// later, make names links?
 							echo "<div class='result_author'>, " . $author['FirstName'] . $author['MiddleName'] .' ' . $author['LastName'] ."</div>";
 						}
 						echo "<div class='result_fiche'>&nbsp;&nbsp;Fiche #".$search_result['Fiche']."&nbsp;</div>";
-						if($search_target=='text' and $first_load==0){
+						if($target_field=='text' and $first_load==0){
 						
 							echo "<div>&nbsp;</div><div class='result_frequency'>".$result_frequencies[$search_result['ArticleId']]."</div><div>". "&nbsp;matches in document.</div>";
 						
@@ -379,13 +392,13 @@ display:none;
 	</div>
 <script>
 
-function parse_results(first_load,search_target){
+function parse_results(first_load,target_field){
 			// parse DOM fields
-			//visible
+		//visible ei, session parameters
 	var number_of_results_div=document.getElementById('number_of_results');
 	var number_of_results=number_of_results_div.innerHTML;
 
-			//hidden
+		//hidden
 	var frequencies_ledger_div = document.getElementById('frequencies_ledger');
 	var authors_ledger_div = document.getElementById('authors_ledger');
 	var titles_ledger_div = document.getElementById('titles_ledger');
@@ -418,7 +431,7 @@ function parse_results(first_load,search_target){
 		n=Number(r_d);
 		var result = result_divs[r_d];
 				// frequency
-		if (search_target=="text" && first_load==0){
+		if (target_field=="text" && first_load==0){
 			var result_frequency = result.getElementsByClassName('result_frequency')[0].innerHTML;
 			console.log(result_frequency);
 			result_frequencies.push({key:n,value:result_frequency});
@@ -535,23 +548,25 @@ function parse_results(first_load,search_target){
 	titles_ledger_div.innerHTML=titles_string;
 	fiches_ledger_div.innerHTML=fiches_string;
 	
-	if(search_target=='text' && first_load==0){
+	if(target_field=='text' && first_load==0){
 		applyCritFilter('relevance');
 	}
 }
 
 function applyCritFilter(criterion){
 
-			//uncheck reverse button
+		// uncheck reverse button before applying a new filter
 	var reverse_button = document.getElementById('reverse_sort_button');
 	reverse_button.checked = false;
 
+		// get current number of results
 	var number_of_results_div=document.getElementById('number_of_results');
 	var number_of_results=number_of_results_div.innerHTML;
 	
 	var results_div=document.getElementById('results');
 	var sorted_divs=[];
 	
+		// read ordering maps 
 	var frequencies_ledger_div = document.getElementById('frequencies_ledger');
 	var authors_ledger_div = document.getElementById('authors_ledger');
 	var titles_ledger_div = document.getElementById('titles_ledger');
@@ -598,13 +613,6 @@ function applyCritFilter(criterion){
 	for (div in sorted_divs){
 		results_div.appendChild(sorted_divs[div]);
 	}
-		//applyResultsPageFilter(?)
-}
-
-function applyResultsPageFilter(page_number){
-
-		// Filter N results per page
-
 }
 
 function reverseSort(){
@@ -617,9 +625,7 @@ function reverseSort(){
 			results_div.appendChild(results_children[c]);
 		}
 	}
-			//applyResultsPageFilter(?
 }
-
 
 		//display functions
 function loadArticle(article_url,search_query){

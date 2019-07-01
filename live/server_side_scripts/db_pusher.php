@@ -23,6 +23,7 @@ Template Name: db_pusher
 
 		# login to wpdb	
 	global $wpdb;
+			# credentials removed from github
 	$wpdb = new wpdb('username','password','database','hostname');
 
 		# create an array for CONTROLSHEET table data
@@ -104,28 +105,27 @@ Template Name: db_pusher
 
 # php insert function here
 
-function insert_row($control_sheet_row){
-		# login again just in case function is called from another script
+function insert_row($row){
+		# reference global variable from inside function
 	global $wpdb;
-	$wpdb = new wpdb('username','password','database','hostname');
 
 		# register variables into PHP
 	//read article id
-	$article_id = $control_sheet_row['ArticleId'];
+	$article_id = $row['ArticleId'];
 	//read authors
-	$article_author = $control_sheet_row['Author'];
+	$article_author = $row['Author'];
 	//read article
-	$article_title = $control_sheet_row['Title'];
+	$article_title = $row['Title'];
 	//read report cover
-	$article_report_cover = $control_sheet_row['ReportCover'];
+	$article_report_cover = $row['ReportCover'];
 	//read number
-	$article_number = $control_sheet_row['Number'];
+	$article_number = $row['Number'];
 	//read fiche
-	$article_fiche = $control_sheet_row['Fiche'];
+	$article_fiche = $row['Fiche'];
 	//read type
-	$article_type = $control_sheet_row['Type'];
+	$article_type = $row['Type'];
 	//read file
-	$article_file_url= $control_sheet_row['Link'];
+	$article_file_url= $row['Link'];
 
 		# parse Fiche column, including possible range		
 	$fiche_numbers = explode(" ",$article_fiche)[1];

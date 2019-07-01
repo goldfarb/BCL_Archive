@@ -75,12 +75,13 @@ get_header();
 		//__DIR__.
 //	require_once('db_pusher.php');
 		# ref Mob @ https://stackoverflow.com/questions/8104998/how-to-call-function-of-one-php-file-from-another-php-file-and-pass-parameters-t#8105044
-	include __DIR__.'/db_pusher.php';
+	//include __DIR__.'/db_pusher.php';
 
 		#login to wpdb
 	global $wpdb;
+		# credentials removed from github
 	$wpdb = new wpdb('username','password','database','hostname');
-
+	
 		# query existing DB table
 	$control_sheet_rows = [];
 	$control_sheet_query = "SELECT * FROM CONTROLSHEET";
@@ -107,6 +108,9 @@ get_header();
 
 			# remove column headings		
 		unset($upload_grid[0]);
+			# and reset index incrementation
+				# ref https://www.dyn-web.com/php/arrays/remove.php
+		$upload_grid = array_values($upload_grid);
 
 			# check for new rows
 		if(sizeof($upload_grid) > sizeof($control_sheet_grid)){
@@ -140,10 +144,13 @@ get_header();
 					}
 				}
 		}
+			# a counters for changes between new and existing control sheet info
+		$total_discrepancies = 0;
+		$discrepancy_rows = 0;
 			# contrast non-new rows for discrepancies
 		foreach($control_sheet_grid as $row){
 				# get corresponding upload row by ID
-			$index = $row['ArticleId']-1;
+			$index = (int)$row['ArticleId']-1;
 			$upload_row = $upload_grid[$index];
 			$column_index = 0;
 				# variable for flagging discrepancies per row
@@ -152,18 +159,21 @@ get_header();
 			foreach($row as $column){
 				if($upload_row[$column_index] != $column){
 					$mismatch = true;
-					echo "mismatch";
-					echo $column;
+					$total_discrepancies += 1;
 				}
 				$column_index +=1;
 			}
 				# replace rows with discrepancies
 			if($mismatch){
-				$delete_query =  "DELETE FROM ARTICLE WHERE 'ArticleId'=" . $row['ArticleId']
-					. "DELETE FROM ARTICLEAUTHOR WHERE 'ArticleId'=" . $row['ArticleId'];
+					# clear previous corresponding rows
+				$delete_query =  "DELETE FROM ARTICLE WHERE ArticleId=" . (int)$row['ArticleId'];
 				$delete_result = $wpdb->query($wpdb->prepare($delete_query,ARRAY_A));
+				$delete_query =  "DELETE FROM ARTICLEAUTHOR WHERE ArticleId=" . (int)$row['ArticleId'];
+				$delete_result = $wpdb->query($wpdb->prepare($delete_query,ARRAY_A));
+
 					# and replace with uploaded row
 				insert_row($row);
+				$discrepancy_rows += 1;
 			}
 		}
 
@@ -188,7 +198,9 @@ get_header();
 			);		
 			$format = array('%d','%s', '%f', '%s', '%s', '%s', '%s', '%s', '%s', '%s');
 			$wpdb->insert($table,$data,$format);	
-		}	
+		}
+		
+		echo $total_discrepancies . " updates made to " . $discrepancy_rows . " rows!<br/>";	
 	}
 ?>
 
@@ -321,30 +333,32 @@ get_footer();
 
 <script>
 		// referenced copy @ https://stackoverflow.com/questions/8645369/how-do-i-get-the-file-content-from-a-form#8645576
+	// detects when a new .tsv file has been selected by the user
 function fileChange(){
-	console.log('the file was changed');
+		// select the elements involved in uploading the file content
 	var hidden_field = document.getElementById('hidden_tsv_input');
 	var file  = document.getElementById('file_input').files[0];
 	var submit = document.getElementById('submit_input');
+		// read the contents of the file into hidden field
 	var reader = new FileReader();
-	
 	reader.readAsText(file);
 	reader.onload=function(){
 		hidden_field.innerHTML=reader.result;
 		console.log(hidden_field.innerHTML);
 	};
-	
 			//ref hudolejev @ https://stackoverflow.com/questions/2874688/how-to-disable-an-input-type-text#2874745
+		// enable submission of the input
 	submit.disabled=false;
 }
 
 function control_sheet_download(){
+		// define a name for the downloaded file
 	var filename = 'bcl_control_sheet.tsv';
-
+		// prepare the hidden div for tsv formatted data
 	var tsv_div = document.getElementById('hidden_tsv_output');
 	tsv_div.innerHTML = "ID\tTitle\tReport Cover\tNumber\tFiche\tAuthor\tType\tComplete/Incomplete\tObservations\tLink\n";
 	
-			//iterate through DOM, populate tsv data
+		// iterate through DOM, populate tsv data into the hidden div
 	var number_of_records = Number(document.getElementById('number_of_records').innerHTML);
 	for (var i=0;i<number_of_records;i++){
 		for (var j=0;j<10;j++){
@@ -356,10 +370,9 @@ function control_sheet_download(){
 			}
 		}
 	}
-		
+		// put the hidden div content into a file and download
 	var tsv_content = tsv_div.innerHTML;
 	var tsv_blob = new Blob([tsv_content], {type:'text/plain'});
-	
 	var download_link = document.createElement('a');
 	download_link.download = filename;
 	download_link.href = window.URL.createObjectURL(tsv_blob);
@@ -368,3 +381,128 @@ function control_sheet_download(){
 	
 }
 </script>
+
+<?php
+
+// copied from db_pusher.php
+function insert_row($row){
+		# reference global variable from inside function
+	global $wpdb;
+
+		# register variables into PHP
+	//read article id
+	$article_id = $row['ArticleId'];
+	//read authors
+	$article_author = $row['Author'];
+	//read article
+	$article_title = $row['Title'];
+	//read report cover
+	$article_report_cover = $row['ReportCover'];
+	//read number
+	$article_number = $row['Number'];
+	//read fiche
+	$article_fiche = $row['Fiche'];
+	//read type
+	$article_type = $row['Type'];
+	//read file
+	$article_file_url= $row['Link'];
+
+		# parse Fiche column, including possible range		
+	$fiche_numbers = explode(" ",$article_fiche)[1];
+	$fiche_number = explode("-",$fiche_numbers)[0];
+	$fiche_span = sizeof(explode("-",$fiche_numbers));
+
+
+	////////register author(s) for DB insertion////////
+	
+		# create an array for (multiple) author(s)
+	$authors = explode("&", $article_author);
+
+		# get the highest current authorID by counting existing DB entries
+	$author_query = "SELECT * FROM AUTHOR";
+	$author_results = $wpdb->get_results($wpdb->prepare($author_query, ARRAY_A));
+	$high_author_id = sizeof($author_results);
+
+		# create holder for new authorIDs
+	$authorIDs = [];
+
+		# break down each author name into parts
+	foreach($authors as $author){
+			#create empty variables for each AUTHOR column
+		$author_first_name='';
+		$author_middle_name='';
+		$author_last_name='';
+			
+			# detect whether author has a name by checking for commas
+		if (strpos($author,',')){
+				# name into last and first components
+			$author_last_first = explode(",", $author);
+			$author_last_name = trim($author_last_first[0]);
+				# may be one or two initials
+			$author_initials = trim($author_last_first[1]);		
+					//ref codaddict @ https://stackoverflow.com/questions/2497970/how-to-check-how-many-times-something-occurs-in-a-string-in-php
+				# detect either one or two initials
+			if (substr_count($author_initials,'.')>1){
+				$author_first_middle = explode(".", $author_initials);
+				$author_first_name = trim($author_first_middle[0]);
+				$author_middle_name = trim($author_first_middle[1]);
+			}else{
+				$author_first_name = trim(str_replace('.','',$author_initials));
+			}
+			# if author is not a name (eg. et al, BCL STAFF)
+		}else{
+			$author_last_name=trim($author);
+		}
+		
+			# check whether author name already exists in database
+		$author_contrast_query = "SELECT * FROM AUTHOR WHERE LastName = '{$author_last_name}' AND FirstName ='{$author_first_name}'";
+		$author_contrast_results  = $wpdb->get_results($wpdb->prepare($author_contrast_query, ARRAY_A));
+
+			# in case duplicates are found, reuse their IDs for current author
+		if (sizeof($author_contrast_results) > 0){
+			foreach($author_contrast_results as $author_contrast_result){
+				$existing_id = json_decode(json_encode($author_contrast_result), true)['AuthorId'];
+				$authorIDs[] = $existing_id;
+			}
+			# otherwise, increment a new author ID for the current author
+		}else{
+			$high_author_id += 1;
+			
+				# and insert the new author information into the database
+			$table = 'AUTHOR';
+			$data = array('AuthorId'=>$high_author_id,
+							'FirstName'=>$author_first_name,
+							'MiddleName'=>$author_middle_name,
+							'LastName'=>$author_last_name);
+			$format = array('%d','%s','%s','%s');
+	
+			$wpdb->insert($table,$data,$format);
+				# adding the new ID to the current list
+			$authorIDs[] = $high_author_id;			
+		}
+	}
+
+		# finally, make new rows for each current author in relation to the current article!
+	foreach ($authorIDs as $authorID){
+		$table = 'ARTICLEAUTHOR';
+		$data = array('ArticleId'=>$article_id, 'AuthorId'=>$authorID);
+		$format = array('%d','%d');
+		$wpdb->insert($table,$data,$format);
+	}
+	
+		////////insert article////////	
+	$table = 'ARTICLE';
+	$data = array('ArticleId'=>$article_id,
+					'Title'=>$article_title,
+					'ReportCover'=>$article_report_cover,
+					'Number'=>$article_number,
+					'Fiche'=>$fiche_number,
+					'Fiches'=>$fiche_span,
+					'Type'=>$article_type,
+					'FileUrl'=>$article_file_url
+					);
+	$format = array('%d','%s', '%f', '%s', '%d', '%d', '%s', '%s', '%d', '%d', '%d');
+	$wpdb->insert($table,$data,$format);
+	
+}
+?>
