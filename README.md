@@ -1,5 +1,5 @@
 # BCL_Archive
-Home to the back-end of bclarchive.net, presently browsable at http://bclarchive.net/browse/.
+Home to the back-end of bclarchive.net, the digital archive of the Biological Computer Lab, presently browsable at http://bclarchive.net/browse/.
 
 ## CONTENTS
 * [Introduction](#introduction)
@@ -16,7 +16,7 @@ Home to the back-end of bclarchive.net, presently browsable at http://bclarchive
 ### Repository Map
 
 # Introduction
-The BCL Archive comprises a wealth of academic research published by the Biological Computation Lab at Univ. of Illinois, Urbana-Champagne, since its inception in 1958 through nearly two-decades up to 1976. Encompassing a unique cross-section of subject matter spanning computer science, biology and philosophy, the archive provides a sensational glimpse into the breathtaking atmosphere of the BCL at the dawn of the information age.
+The BCL Archive comprises a trove of cybernetics research published under the scope of the Biological Computer Laboratory at UIUC, starting in 1958 and continuing to 1976. Comprising a melting pot of academic disciplines not limited to theory of logic, systems biology, experimental neurology, electrical engineering and epistemology, the archive provides a scintillating glimpse into the burgeoning atmosphere of the BCL at the inception of the digital age.
 
 The history of this project begins with the doctorate research of Prof. Peter Asaro, which included the work of retrieving from microfische and digitally scanning the complete published catalog the BCL. Asaro then hired student research assistants at the New School to coordinate the production of a digital archive housed to be housed at bclarchive.net.  The first generation of student workers took up the task of converting the data from digital images to PDF documents and recovering the texts using OCR (optical character recognition).  The subsequent phases of production are herein explained in depth.
 
