@@ -197,11 +197,12 @@ The page user-interface is divided into three main parts: a menu, hidden ledger 
 		- `iframe` to PDF document 
 
 ### Results Parser (onLoad)
-Once PHP has finished supplying the search results and all HTML has been fully rendered to the page, the function, `parseResults()`, will be triggered by the `body onload` event.   This function will read "session parameters" from the UI as well as the search results from the DOM in order to perform a number of tasks:
-* reads session parameters and results from DOM.
-* Computes order mappings from the supplied results and appends them to "hidden ledger".
-* Evaluates session parameters so as to enable/disable specific actions (see toggle buttons)
-	* eg. Relevance is disabled by default, since there is no search term on the first page load.
+As soon as PHP has finished loading the search results and once the page has been fully rendered, `parseResults()` will be called from `<script>` by the `body onload` event.   This function will perform the following steps:
+* Read complete search results from DOM.
+* Generate order mappings from the results
+	* It does this by creating "key:value" hashes for each sort criteria, where key = the result index and value = result criteria, and then sorting by the criteria; the produced index orders are then written to the "hidden ledger" as comma-separated strings.
+* Evaluates session parameters (eg. search field) so as to enable/disable specific sort-by buttons
+	* eg. Relevance is disabled by default, since there is no search term at the beginning of a session.
 * Default is rendering all documents in order of the [BCL index](http://bclarchive.net/fichedir/fiche0_WilsonK_DayDJohn_AuthorIndex1957-1976.pdf)
 		
 ### Filter Functions
