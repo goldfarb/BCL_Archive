@@ -394,19 +394,20 @@ display:none;
 
 function parse_results(first_load,target_field){
 			// parse DOM fields
-		//visible ei, session parameters
-	var number_of_results_div=document.getElementById('number_of_results');
-	var number_of_results=number_of_results_div.innerHTML;
+		// read visible (ei. session) parameters
+	var number_of_results_div = document.getElementById('number_of_results');
+	var number_of_results = number_of_results_div.innerHTML;
 
-		//hidden
+		// define hidden divs
 	var frequencies_ledger_div = document.getElementById('frequencies_ledger');
 	var authors_ledger_div = document.getElementById('authors_ledger');
 	var titles_ledger_div = document.getElementById('titles_ledger');
 	var fiches_ledger_div = document.getElementById('fiches_ledger');
 
+		// define holder array for search results
 	var result_divs=[];
 	
-			//list of ranked results
+			//list for unsorted result criteria
 	var result_frequencies=[];
 	var result_titles=[];
 	var result_authors=[];
@@ -418,26 +419,27 @@ function parse_results(first_load,target_field){
 	var sorted_authors=[];
 	var sorted_fiches=[];
 
+		// load search results into holder array
 	for (c=0;c<number_of_results;c++){
 		result_bubble_key='result_' + String(c);
 		result = document.getElementById(result_bubble_key);
 		result_divs.push(result);
 	}
-			//make lists in for loops:
-			//rank
+//make unsorted key:value hashes as in, key=index;value=criteriaToBeSorted
 				//ref adeneo @ https://stackoverflow.com/questions/17896746/document-getelementsbyclassname-innerhtml-always-returns-undefined#17896758
 	for (r_d in result_divs){
 	
 		n=Number(r_d);
 		var result = result_divs[r_d];
-				// frequency
+		
+				// frequency array
 		if (target_field=="text" && first_load==0){
 			var result_frequency = result.getElementsByClassName('result_frequency')[0].innerHTML;
 			console.log(result_frequency);
 			result_frequencies.push({key:n,value:result_frequency});
 		}
 		
-				//author
+				//author array
 		var author_divs = result.getElementsByClassName('result_author');
 		var authors=[];
 		for (div in author_divs){
@@ -450,16 +452,16 @@ function parse_results(first_load,target_field){
 		}
 		result_authors.push({key:n,value:authors.sort()[0]});
 		
-				//article
+				//article array
 		var article_title=result.getElementsByClassName('result_title')[0].innerHTML;
 		result_titles.push({key:n,value:article_title});
 		
-				//fiche
+				//fiche array
 		var article_fiche=result.getElementsByClassName('result_fiche')[0].innerHTML;
 		result_fiches.push({key:n,value:article_title});
 	}
 
-			//sort
+// sort each unsorted array 
 				// see js reference @ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
 	sorted_frequencies = result_frequencies.sort(function(a,b){
 		var valueA = Number(a.value);
@@ -505,9 +507,14 @@ function parse_results(first_load,target_field){
 	
 	sorted_fiches=result_fiches;
 	
-			// transfer sorted key:value pairs to ledger fields
-			//frequencies
+// transfer sorted key:value pairs to comma-separated integer indices
+		// empty strings for comma-separated indices
 	frequencies_string='';
+	titles_string='';
+	authors_string='';
+	fiches_string='';			
+
+			//frequencies
 	for (line in sorted_frequencies){
 		if(Number(line)<sorted_frequencies.length-1){
 			frequencies_string += sorted_frequencies[line].key +',';
@@ -516,7 +523,6 @@ function parse_results(first_load,target_field){
 		}
 	}
 			//titles
-	titles_string='';
 	for (line in sorted_titles){
 		if(Number(line)<sorted_titles.length-1){
 			titles_string += sorted_titles[line].key +',';
@@ -525,7 +531,6 @@ function parse_results(first_load,target_field){
 		}
 	}
 			//authors
-	authors_string='';
 	for (line in sorted_authors){
 		if(Number(line)<sorted_authors.length-1){
 			authors_string += sorted_authors[line].key +',';
@@ -533,8 +538,7 @@ function parse_results(first_load,target_field){
 			authors_string += sorted_authors[line].key;
 		}
 	}
-	
-	fiches_string='';
+			//fiches
 	for (line in sorted_fiches){
 		if(Number(line)<sorted_fiches.length-1){
 			fiches_string += sorted_fiches[line].key +',';
@@ -542,12 +546,14 @@ function parse_results(first_load,target_field){
 			fiches_string += sorted_fiches[line].key;
 		}
 	}
-
+	
+// write indices into hidden fields
 	frequencies_ledger_div.innerHTML=frequencies_string;
 	authors_ledger_div.innerHTML=authors_string;
 	titles_ledger_div.innerHTML=titles_string;
 	fiches_ledger_div.innerHTML=fiches_string;
 	
+// apply relevance filter by default
 	if(target_field=='text' && first_load==0){
 		applyCritFilter('relevance');
 	}
