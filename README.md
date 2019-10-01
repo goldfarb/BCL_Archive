@@ -200,7 +200,7 @@ The page user-interface is divided into three main parts: a menu, hidden ledger 
 As soon as PHP has finished loading the search results and once the page has been fully rendered, `parseResults()` will be called from `<script>` by the `body onload` event.   This function will perform the following steps:
 * Read complete search results from DOM.
 * Generate order mappings from the results
-	* It does this by creating "key:value" hashes for each sort criteria, where key = the result index and value = result criteria, and then sorting by the criteria; the produced index orders are then written to the "hidden ledger" as comma-separated strings.
+	* It does this by creating "key:value" hashes for each sort criteria, where key = the result index and value = criteria index, and then sorting by the criteria index (value); the consequent result index orders are then appended to the "hidden ledger" as comma-separated strings.
 * Evaluates session parameters (eg. search field) so as to enable/disable specific sort-by buttons
 	* eg. Relevance is disabled by default, since there is no search term at the beginning of a session.
 * Default is rendering all documents in order of the [BCL index](http://bclarchive.net/fichedir/fiche0_WilsonK_DayDJohn_AuthorIndex1957-1976.pdf)
