@@ -18,7 +18,7 @@ Home to the back-end of bclarchive.net, the digital archive of the Biological Co
 # Introduction
 The BCL Archive comprises a trove of cybernetics research published under the scope of the Biological Computer Laboratory at UIUC, starting in 1958 and continuing to 1976. Comprising a melting pot of academic disciplines not limited to theory of logic, systems biology, experimental neurology, electrical engineering and epistemology, the archive provides a scintillating glimpse into the burgeoning atmosphere of the BCL at the inception of the digital age.
 
-The history of this project begins with the doctorate research of Prof. Peter Asaro, which included the work of retrieving from microfische and digitally scanning the complete published catalog the BCL. Asaro then hired student research assistants at the New School to coordinate the production of a digital archive housed to be housed at bclarchive.net.  The first generation of student workers took up the task of converting the data from digital images to PDF documents and recovering the texts using OCR (optical character recognition).  The subsequent phases of production are herein explained in depth.
+The history of this project begins with the doctorate research of Prof. Peter Asaro, which included the work of retrieving from microfiche and digitally scanning the complete published catalog the BCL. Asaro then hired student research assistants at the New School to coordinate the production of a digital archive housed to be housed at bclarchive.net.  The first generation of student workers took up the task of converting the data from digital images to PDF documents and recovering the texts using OCR (optical character recognition).  The subsequent phases of production are herein explained in depth.
 
 This documentation mainly details the archive's back-end, being a custom Wordpress theme; the code, however, is largely platform-independent, and comprises mainly Javascript, PHP, SQL, and HTML.  Python and Ruby scripts were used for validation and standardization and, along with various procedural artifacts, may be found in the **proc** directory of the this repository.   All other scripts (ie. those used on the server) may be found in the **live** directory.  Future generations of research assistants and/or interested students should feel free to fork this repository and examine/alter the code for themselves, and kindly note that **all web sources, including stackexchange posts, have been cited**. The following is an overarching explication of production by the lead developer from 2/2018-6/2019, Edmund Eisenberg.
 
@@ -34,9 +34,9 @@ The first benchmark of compiling the database was the creation of a master contr
 
 # Database Architecture
 
-Foundational to the succesful organization of the archive was the establishment of clear and consistent data structures, encompassing text registration, database schematization and homogenization of the file-name system.  Wrangling a large body of primary-source documents mandated a strong planning convention in the database schema.  This convention was learned in the Lynda.com course "Programming Foundations: Databases with Simon Allardice".  The premise of this schema convention is relational, low-redundancy and purposeful design based on "one-to-many" and "many-to-many" ID relationships.  [An early draft](proc/bcla_early_schema.jpg) of the schema proved essential to achieving the data-sanity and robustness required for implementing a database of the incumbent magnitude, and the current schema is depicted by this image:
+Foundational to the successful organization of the archive was the establishment of clear and consistent data structures, encompassing text registration, database schematization and homogenization of the file-name system.  Wrangling a large body of primary-source documents mandated a strong planning convention in the database schema.  This convention was learned in the Lynda.com course "Programming Foundations: Databases with Simon Allardice".  The premise of this schema convention is relational, low-redundancy and purposeful design based on "one-to-many" and "many-to-many" ID relationships.  [An early draft](misc/bcla_early_schema.jpg) of the schema proved essential to achieving the data-sanity and robustness required for implementing a database of the incumbent magnitude, and the current schema is depicted by this image:
 
-![Schematizing the database was the essential first step of building the BCL archive](proc/bcla_final_schema.jpg "The preliminary schema used in planning the layout of the database")
+![Schematizing the database was the essential first step of building the BCL archive](misc/bcla_final_schema.jpg "The preliminary schema used in planning the layout of the database")
 
 The use of a linking table between ARTICLE and AUTHOR tables reflects the "many-to-many" relationship among these two tables, whereas the remaining tables feature "one-to-many" relationships or, in the special* case of the CONTROLSHEET table, a "one-to-one" relationship.
 
@@ -58,7 +58,7 @@ To create a flat directory structure, a [ruby script](proc/ficheflatten.rb) was 
 To update the correct URL links in the control sheet, a [pattern-matching ruby script](proc/Estimation/filename_matcher_.rb) was utilized.  This algorithm compared article titles from the Control Sheet to document filenames by evaluating the sequential correspondence between all possible combinations therein using a weighting ledger.  Using this approach, the estimation of correspondence was sufficiently accurate and highly preferable to manual correction.
 
 #### text_scraper.py
-The problem of ubiquitous inaccuracies in the OCR remains an issue, but [text-scraping python script](proc/text_scraper.py) was used to exhaustively mine the article texts into XML format.  This contributed significantly towards establishing command over this considerable problem, and there have been attempts at developing a browser-based OCR-correction-interface.  At the time of writing, however, no such interface has been effectively integrated into the archive/database.  This task could be a potential "next step" for future generations of research assistants.	
+The problem of ubiquitous inaccuracies in the OCR remains an issue, but [text-scraping python script](proc/text_scraper.py) was used to exhaustively mine the article texts into XML format.  This contributed significantly towards establishing command over this considerable problem, and there have been attempts at developing a browser-based OCR-correction-interface.  At the time of writing, however, no such interface has been effectively integrated into the archive/database.  This task could be a potential "next step" for future generations of research assistants.
 
 The output of the processes aforementioned is the cumulative hosted content as summarized in the following section.
 
@@ -91,7 +91,7 @@ The comprehensive text data in XML format (generated by [text_scraper.py](#text_
 	... additional pages in document
 	-->
 </pages>			
-		
+
 ```
 It should be noted that, due to rigorous encoding standards of XML, extensive validation of the text was prerequisite and, though not explicitly documented, this is comprehensively referenced by citations included in text_scraper.py.  
 
@@ -110,7 +110,7 @@ As mentioned above, the script takes over 10 minutes to run from start to finish
 
 ```
 	# loads Wordpress relative to our theme's directory
-require_once(__DIR__.'/../../../wp-load.php'); 
+require_once(__DIR__.'/../../../wp-load.php');
 ```
 
 Please note that is only necessary because the script is not being accessed through the browser, and that in Wordpress Templates this normally is loaded by default.
@@ -120,13 +120,13 @@ Please note that is only necessary because the script is not being accessed thro
 The following lines of code connect to the archive's database using the endogenous Wordpress `$wpdb` class along with the database login parameters.
 
 ```
-	# login to wpdb	
+	# login to wpdb
 global $wpdb;
 $wpdb = new wpdb('username','password','database','hostname');
 ```
 Since `$wpdb` is a global classname, database operations can (and will!) be performed from anywhere in the code.  The next few lines use this class to connect to the database and query the CONTROLSHEET table, which may be populated with control sheet data as [documented](#database-modification) in the following section.
 ```
-# login to wpdb	
+# login to wpdb
 global $wpdb;
 $wpdb = new wpdb('username','password','database','hostname');
 
@@ -170,7 +170,7 @@ Note that .tsv (tab-separated-values) files are used for the control sheet as op
 
 The UI comprises two functions, the uploading and downloading of the control spreadsheet.  If an administrator wants to make changes to any given metadata, they may, as such, download a current copy of the control sheet, make changes using a program such as Numbers or Excel and re-upload the updated sheet through the page interface.
 
-Under the hood, the interface works by unpacking the uploaded file contents into a hidden input form with id=`hidden_tsv_input`, submitting the quantities through HTTP POST, updating the database through PHP, and then returning the updated quantities into a hidden div with id=`hidden_tsv_output`, from which a file may be synthesized with Javascript; these functions are explained in greater depth within the comments.	
+Under the hood, the interface works by unpacking the uploaded file contents into a hidden input form with id=`hidden_tsv_input`, submitting the quantities through HTTP POST, updating the database through PHP, and then returning the updated quantities into a hidden div with id=`hidden_tsv_output`, from which a file may be synthesized with Javascript; these functions are explained in greater depth within the comments.
 
 ## Simple Searchable Viewer
 The ultimate benchmark in the back-end development was the assembly of an basic user-interface by which documents could be searched under numerous filters and viewed.  As more work on the front-end is fully anticipated, this section will attempt to go into as much detail as possible in order to facilitate continuation by a front-end developer at this juncture.
@@ -194,7 +194,7 @@ The page user-interface is divided into three main parts: a menu, hidden ledger 
 - View-frame
 	- Result Bubbles
 		- UI elements may and search result "bubbles" are rendered to the document.
-		- `iframe` to PDF document 
+		- `iframe` to PDF document
 
 ### Results Parser (onLoad)
 As soon as PHP has finished loading the search results and once the page has been fully rendered, `parseResults()` will be called from `<script>` by the `body onload` event.   This function will perform the following steps:
@@ -204,7 +204,7 @@ As soon as PHP has finished loading the search results and once the page has bee
 * Evaluates session parameters (eg. search field) so as to enable/disable specific sort-by buttons
 	* eg. Relevance is disabled by default, since there is no search term at the beginning of a session.
 * Default is rendering all documents in order of the [BCL index](http://bclarchive.net/fichedir/fiche0_WilsonK_DayDJohn_AuthorIndex1957-1976.pdf)
-		
+
 ### Filter Functions
 The user may select various sorting parameters including:
 	* Relevance (number of hits per article)
@@ -226,9 +226,9 @@ This final section will briefly suggest possible directions from which developme
 	* eg. author names link to author-sort filter
 
 Please direct any questions to Edmund at ned.eisenberg@gmail.com or 608-692-0889.
-<!-- 
+<!--
 ### Collation and OCR - Yelena w Sofia, Sara
-The first step was the collation of a burgeoning repository of scanned TIFF images into organized PDF documents corresponding to all publications and their Fiche locations. 
+The first step was the collation of a burgeoning repository of scanned TIFF images into organized PDF documents corresponding to all publications and their Fiche locations.
 
 ### Control Sheet Population – Sofia
 
